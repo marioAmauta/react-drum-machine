@@ -1,0 +1,121 @@
+:root {
+  --app-bg-color: #8d8d8d;
+
+  --drum-machine-bg-color: #b3b3b3;
+  --drum-machine-border-color: #ffa500;
+
+  --switch-bg-color: #000000;
+  --switch-indicator-bg-color: #0000ff;
+
+  --display-bg-color: #808080;
+
+  --drum-pad-bg-color: #808080;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  /* outline: 1px solid red; */
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--app-bg-color);
+  padding: 1rem;
+}
+
+.drum-machine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+  padding: 3rem;
+  width: 100%;
+  max-width: 42rem;
+  background-color: var(--drum-machine-bg-color);
+  border: 0.3rem solid var(--drum-machine-border-color);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.display {
+  background-color: var(--display-bg-color);
+  width: 12rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.switch {
+  background-color: var(--switch-bg-color);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 1.5rem;
+  width: 3.5rem;
+  padding: 0.3rem 0.2rem;
+}
+
+.switch.off {
+  justify-content: flex-end;
+}
+
+.switch-indicator {
+  background-color: var(--switch-indicator-bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+}
+
+.drum-pads-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 0.6rem;
+}
+
+.drum-pad {
+  background-color: var(--drum-pad-bg-color);
+  border: none;
+  border-radius: 0.5rem;
+  height: 5rem;
+  width: 5rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.volume-slider {
+  width: 14rem;
+}
