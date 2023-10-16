@@ -78,6 +78,7 @@ export default function App() {
             keyTrigger={keyTrigger}
             url={url}
             isPowerOff={isPowerOff}
+            currentVolume={currentVolume}
             onClick={() => onDrumPadClick({ id, keyTrigger })}
           />
         ))}

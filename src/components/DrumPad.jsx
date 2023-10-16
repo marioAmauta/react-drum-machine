@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types'
 import { elementClasses } from '../lib/constants'
+import { useEffect } from 'react'
+import { setVolume } from '../lib/utils'
 
-export function DrumPad({ id, keyTrigger, url, isPowerOff, onClick }) {
+export function DrumPad({ id, keyTrigger, url, isPowerOff, currentVolume, onClick }) {
+  useEffect(() => {
+    setVolume({ volume: currentVolume })
+  }, [currentVolume])
+
   return (
     <button
       id={id}
@@ -23,6 +29,7 @@ DrumPad.propTypes = {
   keyTrigger: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   isPowerOff: PropTypes.bool.isRequired,
+  currentVolume: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired
 }
 

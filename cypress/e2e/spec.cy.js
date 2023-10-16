@@ -45,6 +45,13 @@ describe('Drum Machine', () => {
     cy.get(`.${elementClasses.drumPad} audio`).should('have.prop', 'volume', 0.5)
   })
 
+  it('Volume should be 0% when power is off', () => {
+    cy.get(`[data-cy=${elementTestIds.powerSwitch}] label`).click()
+    cy.get(`[data-cy=${elementTestIds.powerSwitch}] input`).should('be.checked')
+    cy.get(`.${elementClasses.volumeSlider}`).should('be.disabled')
+    cy.get(`.${elementClasses.drumPad} audio`).should('have.prop', 'volume', 0)
+  })
+
   it('When sound bank is changed, the display should update', () => {
     cy.get(`#${elementIds.display}`).as('display')
 

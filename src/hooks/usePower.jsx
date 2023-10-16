@@ -20,10 +20,12 @@ export function usePower({ setDisplayContent, currentSoundBank }) {
 
     if (isPowerOff) {
       setDisplayContent('')
-      return () => document.removeEventListener('keydown', event => handleKeyDown(event))
-    } else {
-      document.addEventListener('keydown', event => handleKeyDown(event))
+      return
     }
+
+    document.addEventListener('keydown', event => handleKeyDown(event))
+
+    return () => document.removeEventListener('keydown', event => handleKeyDown(event))
   }, [isPowerOff, currentSoundBank, setDisplayContent])
 
   return {
