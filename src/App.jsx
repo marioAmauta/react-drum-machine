@@ -1,107 +1,87 @@
-import { useEffect, useState } from 'react';
-import { Switch } from './components/Switch';
-import { modes, options } from './lib/constants';
-import { changeVolume, playSound } from './lib/utils';
+import { useState } from 'react'
+import { Switch } from './components/Switch'
+import { elementClasses, elementIds, elementTestIds, modes, options } from './lib/constants'
+import { playSound, setVolume } from './lib/utils'
+import { VolumeSlider } from './components/VolumeSlider'
+import { useSoundBank } from './hooks/useSoundBank'
+import { Controls, ControlsSection } from './components/Controls'
+import { Display } from './components/Display'
+import { usePower } from './hooks/usePower'
+import { DrumPad, DrumPadsContainer } from './components/DrumPad'
+import { useVolume } from './hooks/useVolume'
 
 export default function App() {
-  const [isPowerOff, setIsPowerOff] = useState(false);
-  const [isSoundBankTwo, setIsSoundBankTwo] = useState(false);
-  const [displayContent, setDisplayContent] = useState('');
-  const [currentSoundBank, setCurrentSoundBank] = useState(modes[0]);
+  const [displayContent, setDisplayContent] = useState('')
+  const { currentSoundBank, isSoundBankTwo, setIsSoundBankTwo } = useSoundBank({ setDisplayContent })
+  const { isPowerOff, setIsPowerOff } = usePower({ currentSoundBank, setDisplayContent })
+  const { currentVolume, setCurrentVolume } = useVolume({ isPowerOff })
 
-  useEffect(() => {
-    if (isSoundBankTwo) {
-      setCurrentSoundBank(modes[1]);
-    } else {
-      setCurrentSoundBank(modes[0]);
-    }
-  }, [isSoundBankTwo]);
+  const onPowerChange = () => {
+    setIsPowerOff(!isPowerOff)
+  }
 
-  useEffect(() => {
-    setDisplayContent(currentSoundBank);
+  const onSoundBankChange = () => {
+    setIsSoundBankTwo(!isSoundBankTwo)
+    setDisplayContent(isSoundBankTwo ? modes[0] : modes[1])
+  }
 
-    if (isPowerOff) {
-      setDisplayContent('');
-      return;
-    }
+  const onVolumeChange = event => {
+    const volume = Number(event.target.value)
 
-    function handleKeyDown(event) {
-      const key = event.key.toUpperCase();
-      const isKeyValid = options[currentSoundBank].find(({ keyTrigger }) => keyTrigger === key);
-      const selectedSoundName = isKeyValid.id.replaceAll('-', ' ');
+    setVolume({ volume })
+    setCurrentVolume(volume)
+    setDisplayContent(`Volume ${volume}%`)
+  }
 
-      if (isKeyValid) {
-        playSound({ id: key });
-        setDisplayContent(selectedSoundName);
-      }
-    }
+  const onDrumPadClick = ({ id, keyTrigger }) => {
+    const soundName = id.replaceAll('-', ' ')
 
-    document.addEventListener('keydown', event => handleKeyDown(event));
-
-    return () => document.removeEventListener('keydown', event => handleKeyDown(event));
-  }, [currentSoundBank, isPowerOff]);
+    playSound({ id: keyTrigger })
+    setDisplayContent(soundName)
+  }
 
   return (
     <main
-      id='drum-machine'
-      className='drum-machine'
+      id={elementIds.drumMachine}
+      className={elementClasses.drumMachine}
     >
-      <header className='controls'>
-        <section className='controls-section'>
-          <h3>Power {isPowerOff ? 'Off' : 'On'}</h3>
+      <Controls>
+        <ControlsSection title={`Power ${isPowerOff ? 'Off' : 'On'}`}>
           <Switch
-            id='power-switch'
+            testId={elementTestIds.powerSwitch}
+            id={elementIds.powerSwitch}
             isInactive={isPowerOff}
-            handleChange={() => setIsPowerOff(!isPowerOff)}
+            handleChange={onPowerChange}
           />
-        </section>
-        <div
-          id='display'
-          className='display'
-        >
-          {displayContent}
-        </div>
-        <input
-          disabled={isPowerOff}
-          className='volume-slider'
-          type='range'
-          onChange={event => {
-            changeVolume({ event });
-            setDisplayContent(`Volume ${event.target.value}%`);
-          }}
+        </ControlsSection>
+        <Display displayContent={displayContent} />
+        <VolumeSlider
+          isDisabled={isPowerOff}
+          currentVolume={currentVolume}
+          onVolumeChange={onVolumeChange}
         />
-        <section className='controls-section'>
-          <h3>Sound Bank</h3>
+        <ControlsSection title='Sound Bank'>
           <Switch
-            id='sound-bank-switch'
+            testId={elementTestIds.soundBankSwitch}
+            id={elementIds.soundBankSwitch}
             isInactive={isSoundBankTwo}
             isDisabled={isPowerOff}
-            handleChange={() => setIsSoundBankTwo(!isSoundBankTwo)}
+            handleChange={onSoundBankChange}
           />
-        </section>
-      </header>
-      <div className='drum-pads-container'>
+        </ControlsSection>
+      </Controls>
+      <DrumPadsContainer>
         {options[currentSoundBank].map(({ id, keyTrigger, url }) => (
-          <button
+          <DrumPad
             key={id}
             id={id}
-            className='drum-pad'
-            onClick={() => {
-              const soundName = id.replaceAll('-', ' ');
-
-              playSound({ id: keyTrigger });
-              setDisplayContent(soundName);
-            }}
-            disabled={isPowerOff}
-          >
-            {keyTrigger}
-            <audio
-              id={keyTrigger}
-              src={url}
-            ></audio>
-          </button>
+            keyTrigger={keyTrigger}
+            url={url}
+            isPowerOff={isPowerOff}
+            onClick={() => onDrumPadClick({ id, keyTrigger })}
+          />
         ))}
-      </div>
+      </DrumPadsContainer>
     </main>
-  );
+  )
 }

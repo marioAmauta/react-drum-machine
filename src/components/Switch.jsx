@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
+import { elementClasses } from '../lib/constants';
 
-export function Switch({ isInactive, handleChange, id, isDisabled }) {
+export function Switch({ testId, id, isInactive, isDisabled, handleChange }) {
   return (
-    <form className='switch'>
+    <form data-cy={testId}>
       <label
         htmlFor={id}
-        className={`switch ${isInactive ? 'off' : ''}`}
+        className={`${elementClasses.switch} ${isInactive ? elementClasses.off : ''}`}
       >
-        <span className={`switch-indicator ${isInactive ? 'off' : ''}`} />
+        <span
+          className={`${elementClasses.switchIndicator} ${isInactive ? elementClasses.off : ''}`}
+        />
       </label>
       <input
         disabled={isDisabled}
@@ -20,6 +23,7 @@ export function Switch({ isInactive, handleChange, id, isDisabled }) {
 }
 
 Switch.propTypes = {
+  testId: PropTypes.string,
   id: PropTypes.string.isRequired,
   isInactive: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,

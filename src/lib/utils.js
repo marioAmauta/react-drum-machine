@@ -4,8 +4,7 @@ export function playSound({ id }) {
   audio.play();
 }
 
-export function changeVolume({ event }) {
-  const volume = event.target.value;
+export function setVolume({ volume }) {
   const audioElements = document.querySelectorAll('audio');
   audioElements.forEach(audio => (audio.volume = volume / 100));
 }

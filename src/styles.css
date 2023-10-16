@@ -72,10 +72,6 @@ html {
   align-items: center;
 }
 
-input[type='checkbox'] {
-  display: none;
-}
-
 .switch {
   background-color: var(--switch-bg-color);
   display: flex;
@@ -84,6 +80,10 @@ input[type='checkbox'] {
   height: 1.5rem;
   width: 3.5rem;
   padding: 0.3rem 0.2rem;
+}
+
+.switch ~ input[type='checkbox'] {
+  display: none;
 }
 
 .switch.off {

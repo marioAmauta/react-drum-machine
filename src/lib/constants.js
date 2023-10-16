@@ -1,4 +1,29 @@
-export const modes = ['Heater Kit', 'Smooth Piano Kit'];
+export const elementIds = {
+  display: 'display',
+  drumMachine: 'drum-machine',
+  powerSwitch: 'power-switch',
+  soundBankSwitch: 'sound-bank-switch'
+}
+
+export const elementClasses = {
+  display: elementIds.display,
+  drumMachine: elementIds.drumMachine,
+  controls: 'controls',
+  controlsSection: 'controls-section',
+  switch: 'switch',
+  switchIndicator: 'switch-indicator',
+  off: 'off',
+  drumPad: 'drum-pad',
+  drumPadsContainer: 'drum-pads-container',
+  volumeSlider: 'volume-slider'
+}
+
+export const elementTestIds = {
+  powerSwitch: elementIds.powerSwitch,
+  soundBankSwitch: elementIds.soundBankSwitch
+}
+
+export const modes = ['Heater Kit', 'Smooth Piano Kit']
 
 export const options = {
   [modes[0]]: [
@@ -113,4 +138,4 @@ export const options = {
       url: 'https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3'
     }
   ]
-};
+}
