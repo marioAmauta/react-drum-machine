@@ -13,8 +13,9 @@ export const elementClasses = {
   switch: 'switch',
   switchIndicator: 'switch-indicator',
   off: 'off',
-  drumPad: 'drum-pad',
   drumPadsContainer: 'drum-pads-container',
+  drumPad: 'drum-pad',
+  clip: 'clip',
   volumeSlider: 'volume-slider'
 }
 

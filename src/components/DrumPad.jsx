@@ -19,6 +19,7 @@ export function DrumPad({ id, keyTrigger, url, isPowerOff, currentVolume, onClic
       <audio
         id={keyTrigger}
         src={url}
+        className={elementClasses.clip}
       />
     </button>
   )
